@@ -1,5 +1,5 @@
 <div align="center">
-	<h1>DAugment: More data, better representation and improved performance</h1>
+	<h1>DAugment: Better data representation for LLM training</h1>
 </div>
 
 ## Philosophy
