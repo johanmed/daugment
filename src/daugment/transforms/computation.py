@@ -30,7 +30,7 @@ def propose_terms(
     range_max: int = 0.6,
 ) -> list[str]:
     """Select and propose terms with an embedding similarity score falling in a specified range for new combinations"""
-    pairs = compute_similarities(terms, embedding_matrix)
+    pairs = compute_similarity(terms, embedding_matrix)
     new_terms = [
         element
         for pair in pairs
