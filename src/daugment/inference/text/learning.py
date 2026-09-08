@@ -11,7 +11,7 @@ class Infer(dspy.Signature):
     """
 
     questions: list[str] = dspy.InputField(desc="List of questions in the dataset")
-    answer: list[str] = dspy.InputField(desc="List of corresponding responses")
+    answers: list[str] = dspy.InputField(desc="List of corresponding responses")
     key_terms: list[list[str]] = dspy.OutputField(
         desc="List of key terms in each question that were most influential and motivated the true answer inferred for the question"
     )
@@ -24,7 +24,7 @@ def learn(
     questions = list(dataset.keys())
     infer = dspy.Predict(Infer)
     relationships = {}
-    for ind in range(len(dataset), batch_size):
+    for ind in range(0, len(dataset), batch_size):
         batch_questions = questions[ind : ind + batch_size + 1]
         batch_answers = [dataset[question] for question in batch_questions]
         key_terms = infer(questions=batch_questions, answers=batch_answers).get(
