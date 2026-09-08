@@ -7,16 +7,20 @@ from gensim.models import KeyedVectors
 from huggingface_hub import hf_hub_download
 
 
-def embed(term: str, model: KeyedVectors) -> np.ndarray:
-    """Embed a single term"""
-    return model[term]
-
-
-def multi_embed(terms: list[str], repository_id: str, model_name: str) -> np.ndarray:
+def multi_embed(
+    terms: list[str], repository_id: str, model_name: str
+) -> tuple[list[str], np.ndarray]:
     """Embed a list of terms using a word2vec model"""
     model_path = hf_hub_download(repo_id=repository_id, filename=model_name)
     model = KeyedVectors.load(model_path)
-    return np.vstack([embed(term, model) for term in terms])
+    vectors = model.wv
+    final_terms = []
+    embeddings = []
+    for term in terms:
+        if term in vectors:
+            embeddings.append(vectors[term])
+            final_terms.append(term)
+    return final_terms, np.vstack(embeddings)
 
 
 def extract(
@@ -33,5 +37,5 @@ def extract(
     terms = list(terms_answers.keys())
     unpacked_terms = [term for sublist in terms for term in sublist]
     answers = list(terms_answers.values())
-    embeddings = multi_embed(unpacked_terms, repository_id, model_name)
-    return questions, unpacked_terms, answers, embeddings
+    final_terms, embeddings = multi_embed(unpacked_terms, repository_id, model_name)
+    return questions, final_terms, answers, embeddings
