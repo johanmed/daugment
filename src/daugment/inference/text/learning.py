@@ -3,7 +3,7 @@
 import dspy
 
 
-class Infer(dspy.Signature):
+class InferTerms(dspy.Signature):
     """
     Analyze questions and corresponding answers.
     Identify terms in the questions that hold more semantic weight and directly associate with the corresponding answer across pairs of questions and answers.
@@ -17,12 +17,12 @@ class Infer(dspy.Signature):
     )
 
 
-def learn(
+def learn_terms(
     dataset: dict[str, str], batch_size: int = 100
 ) -> tuple[dict[tuple[str], str], list[str]]:
     """Learn key terms in questions based on answers"""
     questions = list(dataset.keys())
-    infer = dspy.Predict(Infer)
+    infer = dspy.Predict(InferTerms)
     relationships = {}
     for ind in range(0, len(dataset), batch_size):
         batch_questions = questions[ind : ind + batch_size + 1]
