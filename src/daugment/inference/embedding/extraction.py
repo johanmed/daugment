@@ -2,7 +2,7 @@
 
 import numpy as np
 from daugment.inference.text.learning import learn
-from daugment.transforms.preparation import load_dataset
+from daugment.transforms.preparation import read_dataset
 from gensim.models import KeyedVectors
 from huggingface_hub import hf_hub_download
 
@@ -28,7 +28,7 @@ def extract(
     local_path: bool = False,
 ) -> tuple[list[str], list[str], list[str], np.ndarray]:
     """Extract from a dataset most influential terms in questions, their embeddings and corresponding answers"""
-    dataset = load_dataset(dataset_path, question_field, answer_field, local_path)
+    dataset = read_dataset(dataset_path, question_field, answer_field, local_path)
     terms_answers, questions = learn(dataset)
     terms = list(terms_answers.keys())
     unpacked_terms = [term for sublist in terms for term in sublist]

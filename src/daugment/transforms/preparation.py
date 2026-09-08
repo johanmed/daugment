@@ -4,7 +4,7 @@ import pandas as pd
 from datasets import load_dataset
 
 
-def load_dataset(
+def read_dataset(
     dataset_path: str,
     question_field: str,
     answer_field: str,
