@@ -39,6 +39,7 @@ class Produce(dspy.Signature):
 class Derive(dspy.Signature):
     """
     Produce answers to the questions using general and accumulated knowledge over multiple rounds of sustained inference.
+    The answers must be very specific, detailed and accurate. Do not guess.
     """
 
     questions: list[str] = dspy.InputField(desc="List of questions to address")
