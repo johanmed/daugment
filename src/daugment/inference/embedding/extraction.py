@@ -1,10 +1,11 @@
 """Module with constructs to generate word embeddings for key terms using word2vec from HuggingFace Hub"""
 
 import numpy as np
-from daugment.inference.text.learning import learn_terms
-from daugment.transforms.preparation import read_dataset
 from gensim.models import KeyedVectors
 from huggingface_hub import hf_hub_download
+
+from daugment.inference.text.learning import learn_terms
+from daugment.transforms.preparation import read_dataset
 
 
 def multi_embed(
@@ -30,10 +31,11 @@ def extract(
     repository_id: str,
     model_name: str,
     local_path: bool = False,
+    batch_size: int = 100,
 ) -> tuple[list[str], list[str], list[str], np.ndarray]:
     """Extract from a dataset most influential terms in questions, their embeddings and corresponding answers"""
     dataset = read_dataset(dataset_path, question_field, answer_field, local_path)
-    terms_answers, questions = learn_terms(dataset)
+    terms_answers, questions = learn_terms(dataset, batch_size)
     terms = list(terms_answers.keys())
     unpacked_terms = [term for sublist in terms for term in sublist]
     answers = list(terms_answers.values())
