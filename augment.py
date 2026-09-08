@@ -33,6 +33,8 @@ if __name__ == "__main__":
     word_model_name = os.environ["WORD_MODEL_NAME"]
     llm_name = os.environ["LLM_NAME"]
     api_key = os.environ["API_KEY"]
+    batch_size = os.getenv("BATCH_SIZE")
+    num_subdatasets = os.getenv("NUM_SUBDATASETS")
 
     llm = dspy.LM(
         llm_name,
@@ -44,17 +46,36 @@ if __name__ == "__main__":
     )
     dspy.configure(lm=llm)
 
-    questions, unpacked_terms, answers, embeddings = extract(
-        dataset_path,
-        question_field,
-        answer_field,
-        repo_word_model,
-        word_model_name,
-        local_dataset,
-    )
+    if batch_size is None:
+        questions, unpacked_terms, answers, embeddings = extract(
+            dataset_path,
+            question_field,
+            answer_field,
+            repo_word_model,
+            word_model_name,
+            local_dataset,
+        )
+    else:
+        questions, unpacked_terms, answers, embeddings = extract(
+            dataset_path,
+            question_field,
+            answer_field,
+            repo_word_model,
+            word_model_name,
+            local_dataset,
+            int(batch_size),
+        )
     new_terms = propose_terms(unpacked_terms, embeddings)
     new_dataset = recommend(questions, new_terms, answers)
     old_dataset = dict(zip(questions, answers))
     final_dataset = {**old_dataset, **new_dataset}
-    df = pd.DataFrame(list(final_dataset.items()), columns=["question", "answer"])
-    df.to_csv(output_path, header=True)
+
+    if batch_size is not None and num_datasets is not None:
+        new_datasets = categorize_dataset(
+            final_dataset, int(num_subdatasets), int(batch_size)
+        )
+    else:
+        new_datasets = categorize_dataset(final_dataset)
+    for ind, dataset in enumerate(new_datasets):
+        df = pd.DataFrame(dataset, columns=["question", "answer"])
+        df.to_csv(f"{output_path}/set{ind}.csv", header=True)
