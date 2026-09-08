@@ -1,0 +1,23 @@
+[project]
+name = "daugment"
+version = "0.1.0"
+description = "Package to augment data for LLM training"
+authors = [
+    {name = "Johannes Medagbe",email = "johanmedagbe@gmail.com"}
+]
+license = "MIT"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "pandas (>=3.0.5,<4.0.0)",
+    "datasets (>=5.0.1,<6.0.0)",
+    "numpy (>=2.5.3,<3.0.0)",
+    "gensim (>=4.4.0,<5.0.0)",
+    "huggingface-hub (>=1.30.0,<2.0.0)",
+    "dspy (>=3.3.1,<4.0.0)"
+]
+
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
