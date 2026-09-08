@@ -16,7 +16,7 @@ from daugment.transforms.computation import propose_terms
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--dataset-path", help="Path to dataset file or id")
-    parser.add_argument("--outpath-path", help="Path to save augmented dataset at")
+    parser.add_argument("--output-path", help="Path to save augmented dataset at")
     parser.add_argument("--question-field", help="Question field in the dataset")
     parser.add_argument("--answer-field", help="Answer field in the dataset")
     parser.add_argument(
