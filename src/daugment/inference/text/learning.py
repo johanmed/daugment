@@ -10,10 +10,10 @@ class Infer(dspy.Signature):
     Avail the list of key terms in each question that you linked to the corresponding answer after thorough semantic and pattern analysis.
     """
 
-    questions: list[str] = dspy.InputField("List of questions in the dataset")
-    answer: list[str] = dspy.InputField("List of corresponding responses")
+    questions: list[str] = dspy.InputField(desc="List of questions in the dataset")
+    answer: list[str] = dspy.InputField(desc="List of corresponding responses")
     key_terms: list[list[str]] = dspy.OutputField(
-        "List of key terms in each question that were most influential and motivated the true answer inferred for the question"
+        desc="List of key terms in each question that were most influential and motivated the true answer inferred for the question"
     )
 
 
