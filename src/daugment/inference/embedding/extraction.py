@@ -2,7 +2,7 @@
 
 import numpy as np
 from daugment.inference.text.learning import learn
-from daugment.transformations.preparation import load_dataset
+from daugment.transforms.preparation import load_dataset
 from gensim.models import KeyedVectors
 from huggingface_hub import hf_hub_download
 
