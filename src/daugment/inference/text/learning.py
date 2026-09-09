@@ -22,18 +22,18 @@ class CategorizeQuestions(dspy.Signature):
     Analyze questions and group them into specific categories based on meaning of the task at hand.
     Return dictionary where categories are keys and list of questions falling under the specific categories are values.
     Similar questions should never be assigned to different categories.
-    Do not change the actual questions in anyway.
-    To have a backup for unvoluntary reformulations, you should always provide a dictionary matching reformulations with original questions.
+    To have a backup for unvoluntary question reformulations, you should always provide the final questions featured in the final dictionary for categories as a list sorted according to the original list of questions.
+    If the original list of questions had question a before b, the list of final questions should also have a before b.
     """
 
     questions: list[str] = dspy.InputField(
-        desc="List of questions to study and infer categories from"
+        desc="List of original questions to study and infer categories from"
     )
     categories: dict[str, list[str]] = dspy.OutputField(
         desc="Inferred grouping of questions based on semantic similarity of the task at hand"
     )
-    reformulated_questions: dict[str, str] = dspy.OutputField(
-        desc="Dictionary with final questions featured in the values of categories as keys and corresponding original question as values"
+    reformulated_questions: list[str] = dspy.OutputField(
+        desc="List of final questions retained during categorization in the same order as the original questions"
     )
 
 
@@ -71,13 +71,20 @@ def categorize_dataset(
             if category not in categorized_dataset:
                 subquestions = categories[category]
                 subanswers = [
-                    dataset[reformulated_questions[question]]
+                    dataset[batch_questions[ind]]
                     for question in subquestions
+                    for ind, quest in enumerate(reformulated_questions)
+                    if question == quest
                 ]
                 categorized_dataset[category] = dict(zip(subquestions, subanswers))
             else:
                 subquestions = categories[category]
-                subanswers = [dataset[question] for question in subquestions]
+                subanswers = [
+                    dataset[batch_questions[ind]]
+                    for question in subquestions
+                    for ind, quest in enumerate(reformulated_questions)
+                    if question == quest
+                ]
                 categorized_dataset[category] = {
                     **categorized_dataset[category],
                     **dict(zip(subquestions, subanswers)),
