@@ -91,8 +91,10 @@ def categorize_dataset(
                 }
     new_datasets = [[] for _ in range(num_subdatasets)]
     for category in categorized_dataset.values():
-        for pair in category.items():
-            n_elements = len(pair) // num_subdatasets
-            for ind1, ind2 in enumerate(range(0, len(pairs) + 1, n_elements)):
-                new_datasets[ind1].append(pair[ind2 : ind2 + n_elements + 1])
+        pairs = category.items()
+        n_elements = (len(pairs) // num_subdatasets) + 1
+        for ind1, ind2 in enumerate(range(0, len(pairs) + 1, n_elements)):
+            for pair in list(pairs)[ind2 : ind2 + n_elements]:
+                new_datasets[ind1].append(pair)
+    new_datasets = [dataset for dataset in new_datasets if len(new_datasets)]
     return new_datasets
