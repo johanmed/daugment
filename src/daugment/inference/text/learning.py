@@ -89,7 +89,7 @@ def categorize_dataset(
                     **categorized_dataset[category],
                     **dict(zip(subquestions, subanswers)),
                 }
-    new_datasets = [[] for _ in num_subdatasets]
+    new_datasets = [[] for _ in range(num_subdatasets)]
     for category in categorized_dataset.values():
         for pair in category.items():
             n_elements = len(pair) // num_subdatasets
