@@ -14,6 +14,7 @@ import pandas as pd
 from dotenv import load_dotenv
 
 from daugment.inference.embedding.extraction import extract
+from daugment.inference.text.learning import categorize_dataset
 from daugment.inference.text.recommendation import recommend
 from daugment.transforms.computation import propose_terms
 
