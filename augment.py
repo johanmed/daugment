@@ -74,18 +74,18 @@ if __name__ == "__main__":
 
         if batch_size is not None and num_subdatasets is not None:
             new_datasets = categorize_dataset(
-                final_dataset=final_dataset,
+                dataset=final_dataset,
                 num_subdatasets=int(num_subdatasets),
                 batch_size=int(batch_size),
             )
         else:
             if batch_size is None:
                 new_datasets = categorize_dataset(
-                    final_dataset=final_dataset, num_subdatasets=int(num_subdatasets)
+                    dataset=final_dataset, num_subdatasets=int(num_subdatasets)
                 )
             else:
                 new_datasets = categorize_dataset(
-                    final_dataset=final_dataset, batch_size=int(batch_size)
+                    dataset=final_dataset, batch_size=int(batch_size)
                 )
         for ind, dataset in enumerate(new_datasets):
             df = pd.DataFrame(dataset, columns=["question", "answer"])
