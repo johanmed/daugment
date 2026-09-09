@@ -51,7 +51,7 @@ def learn_terms(
 
 
 def categorize_dataset(
-    dataset: dict[str, str], num_subdatasets: int = 10, batch_size: int = 100
+    *, dataset: dict[str, str], num_subdatasets: int = 10, batch_size: int = 100
 ) -> list[list[tuple[str]]]:
     """Categorize questions and answers based on semantic similarity"""
     questions = list(dataset.keys())
