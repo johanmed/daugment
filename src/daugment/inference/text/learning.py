@@ -96,5 +96,5 @@ def categorize_dataset(
         for ind1, ind2 in enumerate(range(0, len(pairs) + 1, n_elements)):
             for pair in list(pairs)[ind2 : ind2 + n_elements]:
                 new_datasets[ind1].append(pair)
-    new_datasets = [dataset for dataset in new_datasets if len(new_datasets)]
+    new_datasets = [dataset for dataset in new_datasets if len(dataset)]
     return new_datasets
