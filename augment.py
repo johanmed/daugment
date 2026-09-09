@@ -83,10 +83,12 @@ if __name__ == "__main__":
                 new_datasets = categorize_dataset(
                     dataset=final_dataset, num_subdatasets=int(num_subdatasets)
                 )
-            else:
+            elif num_subdatasets is None:
                 new_datasets = categorize_dataset(
                     dataset=final_dataset, batch_size=int(batch_size)
                 )
+            else:
+                new_datasets = categorize_dataset(dataset=final_dataset)
         for ind, dataset in enumerate(new_datasets):
             df = pd.DataFrame(dataset, columns=["question", "answer"])
             df.to_csv(f"{output_path}/set{ind}.csv", header=True)
