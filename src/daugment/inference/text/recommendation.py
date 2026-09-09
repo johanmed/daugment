@@ -38,9 +38,9 @@ class Produce(dspy.Signature):
 
 class Derive(dspy.Signature):
     """
-    Produce answers to the questions using general and accumulated knowledge over multiple rounds of sustained inference.
-    The answers must be very specific, detailed and accurate.
-    They must follow the same format as the answers accumulated so far.
+    Produce answers to the questions using your general knowledge and priors (accumulated knowledge over multiple rounds of sustained inference) when appropriate.
+    You must always propose a solution. In the absence of clues in the priors, use your general knowledge to make a reasonable and well-informed guess.
+    The answers should be specific and follow the same format as the examples of answers you have access to from the priors. If answers in the priors were SPARQL queries, you must also provide a SPARQL query.
     """
 
     questions: list[str] = dspy.InputField(desc="List of questions to address")
