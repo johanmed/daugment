@@ -23,6 +23,7 @@ class CategorizeQuestions(dspy.Signature):
     Return dictionary where categories are keys and list of questions falling under the specific categories are values.
     Similar questions should never be assigned to different categories.
     Do not change the actual questions in anyway.
+    To have a backup for unvoluntary reformulations, you should always provide a dictionary matching reformulations with original questions.
     """
 
     questions: list[str] = dspy.InputField(
@@ -30,6 +31,9 @@ class CategorizeQuestions(dspy.Signature):
     )
     categories: dict[str, list[str]] = dspy.OutputField(
         desc="Inferred grouping of questions based on semantic similarity of the task at hand"
+    )
+    reformulated_questions: dict[str, str] = dspy.OutputField(
+        desc="Dictionary with final questions featured in the values of categories as keys and corresponding original question as values"
     )
 
 
@@ -60,11 +64,16 @@ def categorize_dataset(
     categorized_dataset = {}
     for ind in range(0, len(dataset), batch_size):
         batch_questions = questions[ind : ind + batch_size + 1]
-        categories = categorize_questions(questions=batch_questions).get("categories")
+        results = categorize_questions(questions=batch_questions)
+        categories = results.get("categories")
+        reformulated_questions = results.get("reformulated_questions")
         for category in categories:
             if category not in categorized_dataset:
                 subquestions = categories[category]
-                subanswers = [dataset[question] for question in subquestions]
+                subanswers = [
+                    dataset[reformulated_questions[question]]
+                    for question in subquestions
+                ]
                 categorized_dataset[category] = dict(zip(subquestions, subanswers))
             else:
                 subquestions = categories[category]
