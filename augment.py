@@ -72,7 +72,7 @@ if __name__ == "__main__":
         old_dataset = dict(zip(questions, answers))
         final_dataset = {**old_dataset, **new_dataset}
 
-        if batch_size is not None and num_datasets is not None:
+        if batch_size is not None and num_subdatasets is not None:
             new_datasets = categorize_dataset(
                 final_dataset=final_dataset,
                 num_subdatasets=int(num_subdatasets),
