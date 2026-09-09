@@ -39,6 +39,7 @@ if __name__ == "__main__":
     num_subdatasets = os.getenv("NUM_SUBDATASETS")
 
     if not Path(output_path).exists():
+        os.mkdir(output_path)
         llm = dspy.LM(
             llm_name,
             api_key=api_key,
