@@ -22,6 +22,7 @@ class CategorizeQuestions(dspy.Signature):
     Analyze questions and group them into specific categories based on meaning of the task at hand.
     Return dictionary where categories are keys and list of questions falling under the specific categories are values.
     Similar questions should never be assigned to different categories.
+    Do not change the actual questions in anyway.
     """
 
     questions: list[str] = dspy.InputField(
